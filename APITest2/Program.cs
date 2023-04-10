@@ -134,18 +134,18 @@ namespace APITest2
             var responseString = await client.GetStringAsync(urlBitcoin);
             CoinDesk? coinDest =
                 JsonSerializer.Deserialize<CoinDesk>(responseString);
-            double rateValueUsd = double.Parse(coinDest?.Bpi?.Usd?.Rate.Replace(".", ""));
-            string FormattedRateUsd = rateValueUsd.ToString("0.000", CultureInfo.InvariantCulture);
-            double rateValueGbp = double.Parse(coinDest?.Bpi?.Gbp?.Rate.Replace(".", ""));
-            string FormattedRateGbp = rateValueGbp.ToString("0.000", CultureInfo.InvariantCulture);
-            double rateValueEur = double.Parse(coinDest?.Bpi?.Eur?.Rate.Replace(".", ""));
-            string FormattedRateEur = rateValueEur.ToString("0.000", CultureInfo.InvariantCulture);
+            decimal rateValueUsd = decimal.Parse(coinDest?.Bpi?.Usd?.Rate.Replace(",","").Replace(".", ","));
+            string FormattedRateUsd = string.Format("{0:f2}", rateValueUsd);
+            decimal rateValueGbp = decimal.Parse(coinDest?.Bpi?.Gbp?.Rate.Replace(",", "").Replace(".", ","));
+            string FormattedRateGbp = string.Format("{0:f2}", rateValueGbp);
+            decimal rateValueEur = decimal.Parse(coinDest?.Bpi?.Eur?.Rate.Replace(",", "").Replace(".", ","));
+            string FormattedRateEur = string.Format("{0:f2}", rateValueEur);
             Console.Clear();
             Console.WriteLine($"On {coinDest?.Time?.Updated} {coinDest?.ChartName} exchange rate:");
             Console.WriteLine($"  {coinDest?.Bpi?.Usd?.Description}");
             Console.WriteLine($"     {coinDest?.Bpi?.Usd?.Code}: {FormattedRateUsd}{WebUtility.HtmlDecode(coinDest?.Bpi?.Usd?.Symbol)}");
             Console.WriteLine();
-            
+
             Console.WriteLine($"  {coinDest?.Bpi?.Gbp?.Description}");
             Console.WriteLine($"     {coinDest?.Bpi?.Gbp?.Code}: {FormattedRateGbp}{WebUtility.HtmlDecode(coinDest?.Bpi?.Gbp?.Symbol)}");
             Console.WriteLine();
